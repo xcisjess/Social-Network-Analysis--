@@ -31,7 +31,7 @@ In this unit you will be working towards building several social network diagram
 [Complexity Labs. (2015). Network Clustering & Connectedness.](https://www.youtube.com/watch?v=2Oa7mef77nM)
 
 ## Knowledge Check
-Once you have completed all tasks in the unit, please complete the [knowledge check].
+Once you have completed all tasks in the unit, please complete the [knowledge check]().
 
 ## Additional Materials
 [iGraph. (2016). Get Started with R iGraph](http://igraph.org/r/#docs)
