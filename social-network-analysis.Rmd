@@ -25,22 +25,98 @@ You have a data set for each of these questions, please complete the following t
 Manipulate each of the data sets so that it is suitable for building a social network using iGraph.
 
 ```{r}
+library("dplyr")
+D1 <- read.csv("get.on.with.csv")
+D2 <- read.csv("best.friends.csv")
+D3 <- read.csv("work.with.csv")
+nodes1 <- distinct(select(D1, from, gender.from))
+links1 <- select(D1, from, to)
 
+nodes2 <- distinct(select(D2, from, gender.from))
+links2 <- select(D2, from, to)
+
+nodes3 <- distinct(select(D3, from, gender.from))
+links3 <- select(D3, from, to)
 ```
 
 ## Visualize the Networks
 
 Create a graph for each of the data sets, are the graphs directed or undirected? Visualize each of the graphs you have created and color the nodes according to gender. Save pdfs of your graphs in this directory for upload to Github.
+**I made all 3 graphs directed. 
 
 ```{r}
+###QUESTIONS###
+# Is it necessary to make the graphs more readable? Is the default the optimal layout of actors?? According to what?
+# Can we convert the get.on.with dataframe into matrix? since it seems it does not matter if it is directed or not.
 
+library("igraph")
+
+# Q1 graph #
+net1 <- graph_from_data_frame(d=links1, vertices=nodes1, directed=TRUE)
+class(net1)
+net1
+
+as_data_frame(net1, what = "vertices")# Check what construct the graph
+as_data_frame(net1, what = "edges")
+
+V(net1)$color = V(net1)$gender.from # Assign the "gender" attribute as the vertex color
+V(net1)$color = gsub("female","pink",V(net1)$color) #Females will be pink
+V(net1)$color = gsub("male","light blue",V(net1)$color) #Males will be light blue
+
+pdf("get.on.with.pdf")
+plot(net1 <- simplify(net1, remove.multiple = TRUE),
+     edge.arrow.size=.3,
+     vertex.label.color="black")
+dev.off()
+
+# Q2 graph #
+net2 <- graph_from_data_frame(d=links2, vertices=nodes2, directed=TRUE)
+class(net2)
+net2
+
+V(net2)$color = V(net2)$gender.from 
+V(net2)$color = gsub("female","pink",V(net2)$color) 
+V(net2)$color = gsub("male","light blue",V(net2)$color) 
+
+pdf("best.friend.pdf")
+plot(net2 <- simplify(net2, remove.multiple = TRUE),
+     edge.arrow.size=.3,
+     vertex.label.color="black")
+dev.off()
+
+# Q3 graph #
+net3 <- graph_from_data_frame(d=links3, vertices=nodes3, directed=TRUE)
+class(net3)
+net3
+
+V(net3)$color = V(net3)$gender.from 
+V(net3)$color = gsub("female","pink",V(net3)$color) 
+V(net3)$color = gsub("male","light blue",V(net3)$color) 
+
+pdf("work.with.pdf")
+plot(net3 <- simplify(net3, remove.multiple = TRUE),
+     edge.arrow.size=.3,
+     vertex.label.color="black")
+dev.off()
+
+
+###COMMENTS###
+# Yay~~ I finally figured out how to change attributes according to other column in the dataframe.
+# ~~~
 ```
+
 
 ## Centrality Measures
 
 Who in the class has the highest degree centrality for each measure?
 ```{r}
-
+degree(net1, mode = "in")
+degree(net1, mode = "out")
+degree(net1, mode = "all")
+power_centrality(net1, nodes = V(net1), loops = FALSE, exponent = 0.5,
+  rescale = FALSE, sparse = TRUE)
+power_centrality(net1, nodes = V(net1), loops = FALSE, exponent = -0.5,
+  rescale = FALSE, sparse = TRUE)
 ```
 
 Does **degree centrality** mean the same thing for each of your networks? Does it make sense for each of your networks?
@@ -48,7 +124,13 @@ Does **degree centrality** mean the same thing for each of your networks? Does i
 Who in the class has the highest closeness centrality?
 
 ```{r}
-
+closeness(net1, mode="all", weights=NA)
+eigen_centrality(net1, directed=T, weights=NA)
+centr_eigen(net1, directed=T, normalized=T)
+```
+```{r}
+betweenness(net1, directed=T, weights=NA)
+centr_betw(net1, directed=T, normalized=T)
 ```
 
 How does **betweeness centrality** differ from degree centrality? Is one more useful than the other? Does their utility differ between your three networks?
