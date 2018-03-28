@@ -42,7 +42,8 @@ links3 <- select(D3, from, to)
 ## Visualize the Networks
 
 Create a graph for each of the data sets, are the graphs directed or undirected? Visualize each of the graphs you have created and color the nodes according to gender. Save pdfs of your graphs in this directory for upload to Github.
-**I made all 3 graphs directed. 
+
+##I made all 3 graphs directed. Since the dataframe shows that every tie has direction.
 
 ```{r}
 ###QUESTIONS###
@@ -109,42 +110,78 @@ dev.off()
 ## Centrality Measures
 
 Who in the class has the highest degree centrality for each measure?
+## 14 and 16 have highest degree centrality for in-degree, which means 19 ties directed to them. 
+## 8 and 11 have highest out-degree, which means 27 ties directed from them.
+## Adding both in and out degree, 11 has the highest degree centrality, which means 42 bilateral relations on "who do you get along with" involve him. 15 persons said they get along with him and 27 persons he thought he get along with. 
+## We can guess that 11 has the widest acquintances network in class.
 ```{r}
 degree(net1, mode = "in")
 degree(net1, mode = "out")
 degree(net1, mode = "all")
-power_centrality(net1, nodes = V(net1), loops = FALSE, exponent = 0.5,
-  rescale = FALSE, sparse = TRUE)
-power_centrality(net1, nodes = V(net1), loops = FALSE, exponent = -0.5,
-  rescale = FALSE, sparse = TRUE)
+centr_degree(net1,normalized=T)
+```
+## Concerning the question here is that "who is your best friend", it will be interesting to see in and out direction alone.
+## 21 is the most popular person in class because her in-dgree centrality is twelve which means twelve persons regarded her as their best friend.Meanwhile, 21 only thought six perons were her best friends. 
+## I feel sorry for 8 since his out-degree is much higher than in-degree. He regarded twenty-two persons as his best friends in class but only eight persons thought he was their best friends. 
+## The sum of the in and out degree do not make sense here because the question is directional and preferential. 
+```{r}
+degree(net2, mode = "in")
+degree(net2, mode = "out")
+degree(net2, mode = "all")
+centr_degree(net2,normalized=T)
+```
+## 16 the top choice in class if there is work to do because seventeen persons wanted to work with her.We can guess that she always performs well in group work.
+## 6 listed twenty persons in class that he wanted to work with. We can guess he is open to whom is going to his teammate.
+
+## Since it is related to real questions, there are a lot of information to dig such as who is the person least preferable to be a teammate.
+```{r}
+degree(net3, mode = "in")
+degree(net3, mode = "out")
+degree(net3, mode = "all")
+centr_degree(net3,normalized=T)
 ```
 
 Does **degree centrality** mean the same thing for each of your networks? Does it make sense for each of your networks?
+##No. For each question, the degree centrality means differently. Looking at the in-dgree and out-dgree alone, it makes sense in each network. However,the sum does not make sense in each network. Also,the information is limited only use degree centrality to check the network. We can only know the traffic of a single node in the network. It is unclear how is the network constructed through degree centrality.
 
 Who in the class has the highest closeness centrality?
 
+##Though I can list the person ranking the highest score in each network, it does not make sense to me. I think that closeness is to measure capabity to assess other nodes by claculating the path distances between nodes(Is it the geometric distance?? Do we assume that distance of every link is equal?). Since we do not have any information on how far one person is from the other by answering the three questions above, I do not think closeness centrality fit our analysis requirement.
+
 ```{r}
 closeness(net1, mode="all", weights=NA)
-eigen_centrality(net1, directed=T, weights=NA)
-centr_eigen(net1, directed=T, normalized=T)
+closeness(net2, mode="all", weights=NA)
+closeness(net3, mode="all", weights=NA)
 ```
 ```{r}
 betweenness(net1, directed=T, weights=NA)
-centr_betw(net1, directed=T, normalized=T)
+betweenness(net2, directed=T, weights=NA)
+betweenness(net3, directed=T, weights=NA)
 ```
 
 How does **betweeness centrality** differ from degree centrality? Is one more useful than the other? Does their utility differ between your three networks?
+Degree centrality measures numbers of connections which a node involved. Betweenness measures a node's brokerage power in a network. I do not think that one is more useful than the other because they reveal different aspects of the network.
+There are slightly difference between degree centrality and betweeness centrality.
+For network 1, 11 has the higest total degree and also the highest betweeness centrality because they are both dependent on the numbers of connections a node involved. More connections you are in, higher possiblity that you can be the broker between other two persons.
+For network 2 and 3, since the question is directional, it make less sense if we only count the a node's total numbers of connections. From betweeness centrality, we can know that 28 and 11 rank the top respectively. They both do not perform well in degree centrality. However, it is their position in the neighborhood that bridge others make them stand out. We can know that betweeness centrality do not care the quality of a relation (direction), it is more influenced by the numbers of connection a node involved and its position in the neighborhood---if it is the broker between the other two.
 
 ## Simple structures
 
 Count the number of dyads and the number and type of triads using the following commands.
 ```{r}
-dyad_census()
+#(mut	The number of pairs with mutual connections). (asym	The number of pairs with non-mutual connections.) (null	The number of pairs with no connection between them.)
+
+dyad_census(net1)
+dyad_census(net2)
+dyad_census(net3)
+
 ```
 [Documentation](http://igraph.org/r/doc/dyad_census.html)
 
 ```{r}
-triad_census()
+triad_census(net1)
+triad_census(net2)
+triad_census(net3)
 ```
 [Documentation](http://igraph.org/r/doc/triad_census.html)
 
@@ -155,29 +192,45 @@ Do these metrics tell you anything about the networks? If so what?
 Answer the following questions using the [clique functions](http://igraph.org/r/doc/cliques.html)
 
 What is the size of the largest clique(s) in each of the three networks?
+12;7;9
+For network 1, the largest size of its cliques is 12;
+For network 2, the largest size of its cliques is 7;
+For network 3, the largest size of its cliques is 9; 
 
 ```{r}
-
+clique_num(net1)
+clique_num(net2)
+clique_num(net3)
 ```
 
 Which nodes/vertices are in the largest cliques for the three networks? Is there much overlap?
-
+They are serously overlapping.
 ```{r}
-
+largest_cliques(net1)
+largest_cliques(net2)
+largest_cliques(net3)
 ```
 
 How many **maximal cliques** are there in each of the networks?
-
+64;35;36
 ```{r}
-
+count_max_cliques(net1)
+count_max_cliques(net2)
+count_max_cliques(net3)
 ```
 
 ## Components & Cutpoints
 
 Find the cutpoints (articulation points) for each of the three networks you generated. What does this tell you about the graphs? Does what you find match a visual exploration of the networks?
+```{r}
+articulation_points(net1)
+articulation_points(net2)
+articulation_points(net3)
+```
 
 ## Putting it all together
 
 Write a narrative description of the social ties among members of this 7th grade class using the network, centrality and structural metrics you have developed. Can you provide any recommendations to the teacher of this class based on your analysis? What other information would you want to know? Can you remeber being in seventh grade, does this refelct your experience?
 
+(update later)
 ```{r}
