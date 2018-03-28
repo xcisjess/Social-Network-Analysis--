@@ -43,7 +43,7 @@ links3 <- select(D3, from, to)
 
 Create a graph for each of the data sets, are the graphs directed or undirected? Visualize each of the graphs you have created and color the nodes according to gender. Save pdfs of your graphs in this directory for upload to Github.
 
-##I made all 3 graphs directed. Since the dataframe shows that every tie has direction.
+I made all 3 graphs directed. Since the dataframe shows that every tie has direction.
 
 ```{r}
 ###QUESTIONS###
@@ -110,30 +110,30 @@ dev.off()
 ## Centrality Measures
 
 Who in the class has the highest degree centrality for each measure?
-## 14 and 16 have highest degree centrality for in-degree, which means 19 ties directed to them. 
-## 8 and 11 have highest out-degree, which means 27 ties directed from them.
-## Adding both in and out degree, 11 has the highest degree centrality, which means 42 bilateral relations on "who do you get along with" involve him. 15 persons said they get along with him and 27 persons he thought he get along with. 
-## We can guess that 11 has the widest acquintances network in class.
+ 14 and 16 have highest degree centrality for in-degree, which means 19 ties directed to them. 
+ 8 and 11 have highest out-degree, which means 27 ties directed from them.
+ Adding both in and out degree, 11 has the highest degree centrality, which means 42 bilateral relations on "who do you get along with" involve him. 15 persons said they get along with him and 27 persons he thought he get along with. 
+ We can guess that 11 has the widest acquintances network in class.
 ```{r}
 degree(net1, mode = "in")
 degree(net1, mode = "out")
 degree(net1, mode = "all")
 centr_degree(net1,normalized=T)
 ```
-## Concerning the question here is that "who is your best friend", it will be interesting to see in and out direction alone.
-## 21 is the most popular person in class because her in-dgree centrality is twelve which means twelve persons regarded her as their best friend.Meanwhile, 21 only thought six perons were her best friends. 
-## I feel sorry for 8 since his out-degree is much higher than in-degree. He regarded twenty-two persons as his best friends in class but only eight persons thought he was their best friends. 
-## The sum of the in and out degree do not make sense here because the question is directional and preferential. 
+ Concerning the question here is that "who is your best friend", it will be interesting to see in and out direction alone.
+ 21 is the most popular person in class because her in-dgree centrality is twelve which means twelve persons regarded her as their best friend.Meanwhile, 21 only thought six perons were her best friends. 
+ I feel sorry for 8 since his out-degree is much higher than in-degree. He regarded twenty-two persons as his best friends in class but only eight persons thought he was their best friends. 
+ The sum of the in and out degree do not make sense here because the question is directional and preferential. 
 ```{r}
 degree(net2, mode = "in")
 degree(net2, mode = "out")
 degree(net2, mode = "all")
 centr_degree(net2,normalized=T)
 ```
-## 16 the top choice in class if there is work to do because seventeen persons wanted to work with her.We can guess that she always performs well in group work.
-## 6 listed twenty persons in class that he wanted to work with. We can guess he is open to whom is going to his teammate.
+ 16 the top choice in class if there is work to do because seventeen persons wanted to work with her.We can guess that she always performs well in group work.
+ 6 listed twenty persons in class that he wanted to work with. We can guess he is open to whom is going to his teammate.
 
-## Since it is related to real questions, there are a lot of information to dig such as who is the person least preferable to be a teammate.
+ Since it is related to real questions, there are a lot of information to dig such as who is the person least preferable to be a teammate.
 ```{r}
 degree(net3, mode = "in")
 degree(net3, mode = "out")
@@ -142,11 +142,11 @@ centr_degree(net3,normalized=T)
 ```
 
 Does **degree centrality** mean the same thing for each of your networks? Does it make sense for each of your networks?
-##No. For each question, the degree centrality means differently. Looking at the in-dgree and out-dgree alone, it makes sense in each network. However,the sum does not make sense in each network. Also,the information is limited only use degree centrality to check the network. We can only know the traffic of a single node in the network. It is unclear how is the network constructed through degree centrality.
+No. For each question, the degree centrality means differently. Looking at the in-dgree and out-dgree alone, it makes sense in each network. However,the sum does not make sense in each network. Also,the information is limited only use degree centrality to check the network. We can only know the traffic of a single node in the network. It is unclear how is the network constructed through degree centrality.
 
 Who in the class has the highest closeness centrality?
 
-##Though I can list the person ranking the highest score in each network, it does not make sense to me. I think that closeness is to measure capabity to assess other nodes by claculating the path distances between nodes(Is it the geometric distance?? Do we assume that distance of every link is equal?). Since we do not have any information on how far one person is from the other by answering the three questions above, I do not think closeness centrality fit our analysis requirement.
+Though I can list the person ranking the highest score in each network, it does not make sense to me. I think that closeness is to measure capabity to assess other nodes by claculating the path distances between nodes(Is it the geometric distance?? Do we assume that distance of every link is equal?). Since we do not have any information on how far one person is from the other by answering the three questions above, I do not think closeness centrality fit our analysis requirement.
 
 ```{r}
 closeness(net1, mode="all", weights=NA)
